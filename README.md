@@ -384,15 +384,15 @@ uvicorn src.main:app --reload
 
 ---
 
-### 📁 `src/chat/` — Chat Conversation and AI Processing
+#### 📁 `src/integrations/telegram/` — Telegram Integration
 
-- `client.py`: (Optional) integration with CRM or NLP service  
-- `router.py`: Chat API routes — send/receive messages  
-- `schemas.py`: Pydantic chat structures  
-- `models.py`: Chat threads/messages in DB  
-- `constants.py`: Message statuses, predefined tags  
-- `service.py`: Save/query/filter messages; trigger actions  
-- `utils.py`: Text preprocessing, tag detection, formatting
+- `client.py` : Makes HTTP requests to the Telegram API (e.g., setWebhook, getMe, removeWebhook)
+- `crud.py` : Database CRUD operations for Telegram integration records
+- `dependencies.py` : Provides service instances and dependency wiring
+- `schemas.py` : Pydantic models for API request/response validation
+- `service.py` : Core business logic for managing Telegram bot integration
+- `__init__.py` : Package marker file, no business logic
+
 ---
 
 ## 8. 📡 API Endpoints by Module
