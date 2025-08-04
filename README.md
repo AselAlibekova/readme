@@ -364,16 +364,18 @@ uvicorn src.main:app --reload
 
 ---
 
-### 📁 `src/bot/` — Integration with External Messaging Bots
+### 📁 `src/integrations/instagram/` — Instagram Integration
 
-- `client.py`: Makes outbound API calls to external bots  
-- `router.py`: Webhook routes from bots  
-- `schemas.py`: Message/request structures  
-- `models.py`: Bot logs, metadata  
-- `service.py`: Bot message handler, AI decision-making  
-- `utils.py`: Format message text, detect language, etc.
+* **`client.py`** : Handles direct HTTP requests to the Instagram API
+* **`crud.py`** : Database logic for storing Instagram tokens and integration state
+* **`deleted_data_crud.py`** : Manages database records for deleted Instagram data
+* **`dependencies.py`** : Dependency injection for Instagram services and DB
+* **`schemas.py`** : Pydantic models for tokens, deletion records, etc.
+* **`service.py`** : Business logic for token management, data deletion, status checks
+* **`utils.py`** : Helpers for signature validation and other Instagram-specific routines
 
 ---
+
 
 ### 📁 `src/broadcast/` — Campaign-Based Mass Messaging
 
