@@ -43,52 +43,202 @@ The backend handles API requests, processes user and bot interactions, manages b
 
 ```
 fastapi-project
-├── src
-│   ├── auth
-│   │   ├── router.py
-│   │   ├── schemas.py
-│   │   ├── models.py
-│   │   ├── dependencies.py
-│   │   ├── config.py
-│   │   ├── constants.py
-│   │   ├── service.py
-│   │   └── utils.py
-│   ├── bot
-│   │   ├── client.py  # client model for external service communication
-│   │   ├── schemas.py
-│   │   ├── models.py
-│   │   ├── router.py
-│   │   ├── service.py
-│   │   └── utils.py
-│   └── broadcast
-│   │   ├── client.py  # client model for external service communication
-│   │   ├── router.py
-│   │   ├── schemas.py
-│   │   ├── models.py
-│   │   ├── service.py
-│   │   ├── tasks.py
-│   │   └── utils.py
-│   └── chat
-│   │   ├── client.py  # client model for external service communication
-│   │   ├── router.py
-│   │   ├── schemas.py
-│   │   ├── models.py
-│   │   ├── constants.py
-│   │   ├── service.py
-│   │   └── utils.py
+src/
+├── core/
+│   ├── __init__.py
 │   ├── celery_config.py
-│   ├── config.py  # global configs
-│   ├── models.py  # global models
-│   ├── database.py  # db connection related stuff
-│   └── main.py
-├── .env
-├── .gitignore
-├── .dockerignore
-├── docker-compose.yml
-├── dockerfile
-├── requirements.txt
-├── README.md
-└── alembic.ini
+│   ├── config.py
+│   ├── crudbase.py
+│   ├── database.py
+│   ├── dependencies.py
+│   └── logger.py
+│
+├── integrations/
+│   ├── instagram/
+│   │   ├── __init__.py
+│   │   ├── client.py
+│   │   ├── crud.py
+│   │   ├── deleted_data_crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   ├── service.py
+│   │   └── utils.py
+│   ├── openai_service/
+│   │   ├── __init__.py
+│   │   ├── client.py
+│   │   ├── dependencies.py
+│   │   └── service.py
+│   ├── telegram/
+│   │   ├── __init__.py
+│   │   ├── client.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── whatsapp/
+│   │   ├── client.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   ├── service.py
+│   │   └── utils.py
+│   └── whatsapp_web/
+│       ├── __init__.py
+│       ├── client.py
+│       ├── crud.py
+│       ├── dependencies.py
+│       ├── schemas.py
+│       └── service.py
+│
+├── modules/
+│   ├── admin/
+│   │   ├── __init__.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── analytics/
+│   │   ├── __init__.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── assistant/
+│   │   ├── __init__.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── auth/
+│   │   ├── __init__.py
+│   │   ├── dependencies.py
+│   │   ├── jwt_service.py
+│   │   ├── password_manager.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── broadcast/
+│   │   ├── __init__.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   ├── service.py
+│   │   └── utils.py
+│   ├── chat/
+│   │   ├── __init__.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── company/
+│   │   ├── __init__.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── dialogue/
+│   │   ├── __init__.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── email/
+│   │   ├── templates/
+│   │   │   ├── img/
+│   │   │   │   ├── black_ru_logo_pradavan_1700x500.png
+│   │   │   │   ├── gis.png
+│   │   │   │   ├── img3.png
+│   │   │   │   ├── inst.png
+│   │   │   │   ├── mailing_end.png
+│   │   │   │   ├── password_reset.png
+│   │   │   │   └── wp.png
+│   │   │   ├── bot_block.html
+│   │   │   ├── bot_limit.html
+│   │   │   ├── broadcast_results.html
+│   │   │   ├── client_left_contact.html
+│   │   │   ├── profile_create.html
+│   │   │   └── update_profile.html
+│   ├── leads/
+│   │   ├── __init__.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── messages/
+│   │   ├── __init__.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── platform_user/
+│   │   ├── __init__.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   ├── profile/
+│   │   ├── __init__.py
+│   │   ├── dependencies.py
+│   │   └── service.py
+│   ├── request_callback/
+│   │   ├── __init__.py
+│   │   ├── crud.py
+│   │   ├── dependencies.py
+│   │   ├── schemas.py
+│   │   └── service.py
+│   └── templates/
+│       ├── __init__.py
+│       ├── crud.py
+│       ├── dependencies.py
+│       ├── schemas.py
+│       └── service.py
+│
+├── routers/
+│   └── v1/
+│       ├── __init__.py
+│       ├── admin_router.py
+│       ├── analytics_router.py
+│       ├── assistant_router.py
+│       ├── auth_router.py
+│       ├── broadcast_router.py
+│       ├── chat_router.py
+│       ├── files_router.py
+│       ├── follow_up_router.py
+│       ├── instagram_router.py
+│       ├── leads_router.py
+│       ├── profile_router.py
+│       ├── request_callback_router.py
+│       ├── system_router.py
+│       ├── telegram_router.py
+│       ├── whatsapp_router.py
+│       └── whatsapp_web_router.py
+│
+├── services/
+│   ├── broker/
+│   │   ├── __init__.py
+│   │   ├── dependencies.py
+│   │   ├── interface.py
+│   │   └── service.py
+│   └── files_manager/
+│       ├── __init__.py
+│       ├── client.py
+│       ├── dependencies.py
+│       ├── schemas.py
+│       ├── service.py
+│       └── utils.py
+│
+├── redis/
+│   ├── __init__.py
+│   ├── dependencies.py
+│   └── service.py
+│
+├── scheduler/
+│   ├── __init__.py
+│   ├── config.py
+│   └── tasks.py
+│
+├── __init__.py
+├── main.py
+├── models.py
+├── router.py
+└── schemas.py
 ```
 
 ---
