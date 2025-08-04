@@ -275,16 +275,6 @@ REDIS_URL=redis://localhost:6379/0
 uvicorn src.main:app --reload
 ```
 
-### Production
-
-```bash
-uvicorn src.main:app --host 0.0.0.0 --port 8000
-```
-
----
-
-Вот пример **детального и современного описания модуля `src/`** — полностью по твоему проекту, в правильном стиле (на английском, как ты просила):
-
 ---
 
 ## 7. 📂 Module-by-Module Breakdown
@@ -361,17 +351,110 @@ uvicorn src.main:app --host 0.0.0.0 --port 8000
 * No business logic — used for package/module structure only
 
 ---
+---
 
-### 📁 `src/auth/` — User Authentication & Authorization
+### 📁 `src/core/` — Project Core and Configuration
 
-- `router.py`: API routes — login, signup, token refresh  
-- `schemas.py`: User input validation (signup, login, etc.)  
-- `models.py`: SQLAlchemy model for `User`, credentials  
-- `dependencies.py`: `get_current_user()`, role verification  
-- `config.py`: Auth-specific constants (token expiry)  
-- `constants.py`: Role definitions (`admin`, `user`)  
-- `service.py`: Core login/signup logic, hashing, token creation  
-- `utils.py`: Password hashing, JWT encode/decode
+This folder contains the foundational logic and shared components used across the backend.
+It centralizes configuration, database setup, base CRUD utilities, dependency injection, logging, and Celery (task queue) configuration.
+
+---
+
+#### **File-by-file breakdown:**
+
+---
+
+#### `__init__.py`
+
+* **Purpose:** Marks the directory as a Python package.
+* **Details:**
+  No business logic inside; required for module imports.
+
+---
+
+#### `celery_config.py`
+
+* **Purpose:** Celery worker configuration.
+* **Details:**
+
+  * Creates the global Celery application for distributed task processing.
+  * Loads configuration from environment (via project config).
+  * Configures broker and backend (e.g., Redis), SSL if needed, task serialization.
+  * Registers project task modules for Celery.
+  * Sets up logging for Celery via signals.
+
+---
+
+#### `config.py`
+
+* **Purpose:** Application settings/configuration.
+* **Details:**
+
+  * Loads settings from `.env` using environment variables and the `dotenv` library.
+  * Defines the `Config` class, storing:
+
+    * Authentication options (JWT, secret keys, expiry)
+    * Debug mode and allowed hosts
+    * Database, Redis, RabbitMQ URLs
+    * Email (SMTP) settings and helpers for FastAPI Mail
+    * Storage (Azure), OpenAI, WhatsApp, Telegram, Instagram API settings
+  * Provides method for generating FastAPI Mail connection config.
+
+---
+
+#### `crudbase.py`
+
+* **Purpose:** Base class for CRUD operations on SQLAlchemy models.
+* **Details:**
+
+  * Implements a generic, reusable CRUDBase for create, read, update, delete operations.
+  * Provides:
+
+    * Safe error handling (returns 404/400 if object not found or invalid field)
+    * Async create, read, update, remove, count methods
+    * Works with both SQLAlchemy ORM models and Pydantic schemas.
+  * Used as a base for all domain CRUD logic throughout the project.
+
+---
+
+#### `database.py`
+
+* **Purpose:** Database engine, session and initialization logic.
+* **Details:**
+
+  * Initializes both async and sync SQLAlchemy engines (for async endpoints & Celery tasks).
+  * Provides:
+
+    * Session factories for both sync and async DB access
+    * The project's declarative base (`Base`) for model definition
+    * `init_db` async function to initialize schema
+    * Dependency helpers (`get_db`, `get_db_sync`) for FastAPI
+  * Reads config from project settings.
+
+---
+
+#### `dependencies.py`
+
+* **Purpose:** Project-wide dependency injection.
+* **Details:**
+
+  * Main function: `get_config()` (returns cached project config for dependency injection in FastAPI).
+  * Used in routers, background tasks, and other places to access configuration.
+
+---
+
+#### `logger.py`
+
+* **Purpose:** Centralized logging configuration for the whole project.
+* **Details:**
+
+  * Sets up advanced logging formatting (time, file, log level, etc.).
+  * Configures logging for uvicorn, Celery, app code, and third-party loggers.
+  * Adapts log levels based on debug mode from config.
+  * `setup_logging()` — applies all logging config at application and worker startup.
+  * `logger` — main logger for application code.
+
+---
 
 ---
 
