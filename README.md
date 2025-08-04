@@ -376,16 +376,11 @@ uvicorn src.main:app --reload
 
 ---
 
+### 📁 `src/integrations/openai_service/` — Integration with OpenAI-based Assistant API
 
-### 📁 `src/broadcast/` — Campaign-Based Mass Messaging
-
-- `client.py`: Sends messages (Telegram, etc.)  
-- `router.py`: Endpoints for campaign management  
-- `schemas.py`: Input for creating/updating campaigns  
-- `models.py`: Campaign, MessageLog, Recipient  
-- `service.py`: Core business logic for campaign control  
-- `tasks.py`: Celery background task for async dispatch  
-- `utils.py`: Helpers — schedule parsing, template fill
+* **`client.py`** : Handles HTTP requests to the OpenAI-based backend (creation and update of assistants)
+* **`dependencies.py`** : Dependency injection for providing ready-to-use OpenAI service instances
+* **`service.py`** : Business logic for creating and updating assistants via the OpenAI API
 
 ---
 
