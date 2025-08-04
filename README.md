@@ -283,38 +283,82 @@ uvicorn src.main:app --host 0.0.0.0 --port 8000
 
 ---
 
+Вот пример **детального и современного описания модуля `src/`** — полностью по твоему проекту, в правильном стиле (на английском, как ты просила):
+
+---
+
 ## 7. 📂 Module-by-Module Breakdown
 
-### `src/main.py`  
-**Purpose**: Entry point of the FastAPI application.  
-**Details**:
-- Initializes FastAPI app instance  
-- Registers routers from all internal modules  
-- Applies CORS, middleware, exception handlers
+---
 
-### `src/config.py`  
-**Purpose**: Application-wide configuration  
-**Details**:
-- Uses `pydantic.BaseSettings` to read from `.env`  
-- Stores secrets, token lifetimes, CORS origins, DB URL, etc.
+### `src/main.py`
 
-### `src/database.py`  
-**Purpose**: SQLAlchemy database engine and session factory  
+**Purpose**: Entry point for the FastAPI application.
 **Details**:
-- Sets up `engine`, `SessionLocal`  
-- Provides `get_db()` dependency for safe session usage
 
-### `src/models.py`  
-**Purpose**: Shared abstract SQLAlchemy models  
-**Details**:
-- Base model and reusable mixins (e.g., `TimestampMixin`, `UUIDMixin`)  
-- Used by models in `auth`, `chat`, etc.
+* Initializes FastAPI app instance
+* Loads configuration and logger
+* Handles application lifespan: connects/disconnects to message broker and database
+* Registers all API routers (via `src/router.py`)
+* Adds CORS middleware using allowed hosts from config
 
-### `src/celery_config.py`  
-**Purpose**: Celery worker setup  
+---
+
+### `src/models.py`
+
+**Purpose**: Shared SQLAlchemy data models for the platform.
 **Details**:
-- Defines Celery app, broker URL  
-- Prepares module for async task execution
+
+* Defines all major database tables (ORM models) used by modules
+* Contains tables for WhatsApp, Telegram, Instagram, Company, PlatformUsers, Assistant, Integrations, Dialogue, Messages, Leads, Tariff, etc.
+* Models use relationships for foreign keys and object associations
+* Example models:
+
+  * `WhatsAppTable`, `TelegramTable`, `InstagramTable`, `WhatsAppWebTable` — service integrations
+  * `CompanyTable` — organization info and relationships
+  * `PlatformUsersTable` — platform users and credentials
+  * `AssistantTable` — AI assistants
+  * `AssistantIntegrationsTable` — mapping assistants to integrations
+  * `DialogueTable` — client-assistant chat sessions
+  * `MessagesTable` — chat message history
+  * `LeadsTable` — sales leads
+  * `TariffTable` — subscription/plans
+  * `FaasServicesTable` — serverless (faas) integrations
+  * `RequestCallbackTable` — callback requests from users
+
+---
+
+### `src/router.py`
+
+**Purpose**: Central API router for the project.
+**Details**:
+
+* Imports routers for each business domain from `src.routers.v1.*`
+* Combines all routers under `/api/v1/` prefix
+* Registers routers for auth, chat, leads, admin, files, system, profile, telegram, whatsapp, instagram, broadcast, assistant, analytics, and others
+* This is the only router imported into the main app, ensuring all endpoints are available under one hierarchy
+
+---
+
+### `src/schemas.py`
+
+**Purpose**: Shared Pydantic schemas for API requests and responses.
+**Details**:
+
+* Defines generic response formats for consistent API design
+* Example schemas:
+
+  * `ListResponse` — a paginated list of items
+  * `StatusResponse` — standard status and message reply
+
+---
+
+### `src/__init__.py`
+
+**Purpose**: Marks the `src` directory as a Python package.
+**Details**:
+
+* No business logic — used for package/module structure only
 
 ---
 
