@@ -364,7 +364,7 @@ It centralizes configuration, database setup, base CRUD utilities, dependency in
 
 ---
 
-#### `__init__.py`
+#### `src/core/__init__.py`
 
 * **Purpose:** Marks the directory as a Python package.
 * **Details:**
@@ -372,7 +372,7 @@ It centralizes configuration, database setup, base CRUD utilities, dependency in
 
 ---
 
-#### `celery_config.py`
+#### `src/core/celery_config.py`
 
 * **Purpose:** Celery worker configuration.
 * **Details:**
@@ -385,7 +385,7 @@ It centralizes configuration, database setup, base CRUD utilities, dependency in
 
 ---
 
-#### `config.py`
+#### `src/core/config.py`
 
 * **Purpose:** Application settings/configuration.
 * **Details:**
@@ -402,7 +402,7 @@ It centralizes configuration, database setup, base CRUD utilities, dependency in
 
 ---
 
-#### `crudbase.py`
+#### `src/core/crudbase.py`
 
 * **Purpose:** Base class for CRUD operations on SQLAlchemy models.
 * **Details:**
@@ -417,7 +417,7 @@ It centralizes configuration, database setup, base CRUD utilities, dependency in
 
 ---
 
-#### `database.py`
+#### `src/core/database.py`
 
 * **Purpose:** Database engine, session and initialization logic.
 * **Details:**
@@ -433,7 +433,7 @@ It centralizes configuration, database setup, base CRUD utilities, dependency in
 
 ---
 
-#### `dependencies.py`
+#### `src/core/dependencies.py`
 
 * **Purpose:** Project-wide dependency injection.
 * **Details:**
@@ -443,7 +443,7 @@ It centralizes configuration, database setup, base CRUD utilities, dependency in
 
 ---
 
-#### `logger.py`
+#### `src/core/logger.py`
 
 * **Purpose:** Centralized logging configuration for the whole project.
 * **Details:**
